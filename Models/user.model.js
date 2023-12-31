@@ -15,6 +15,21 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+
+  userName: {
+    type: String,
+    required: true,
+  },
+
+  roles: {
+    type: String,
+    default: "user",
+  },
+
+  profileImage: {
+    data: Buffer, // Buffer type to store binary data
+    contentType: String, // MIME type of the image
+  },
 });
 
 UserSchema.pre("save", async function (next) {
@@ -32,6 +47,7 @@ UserSchema.pre("save", async function (next) {
 
 UserSchema.methods.isValidPassword = async function (password) {
   try {
+    console.log(password, this.password);
     return await bcrypt.compare(password, this.password);
   } catch (error) {
     throw error;
